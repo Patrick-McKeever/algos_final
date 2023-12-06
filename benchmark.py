@@ -53,10 +53,10 @@ def test_all_algos(filename, delimiter=" "):
 	return (ff_res, sff_res, pfp_res)
 
 if __name__ == "__main__":
-	bipartite_dir = os.path.join("data_test", "bipartite_examples")
-	fixeddegree_dir = os.path.join("data_test", "fixeddegree_examples")  
-	mesh_dir = os.path.join("data_test", "mesh_examples")  
-	random_dir = os.path.join("data_test", "random_examples")
+	bipartite_dir = os.path.join(sys.argv[1], "bipartite_examples")
+	fixeddegree_dir = os.path.join(sys.argv[1], "fixeddegree_examples")  
+	mesh_dir = os.path.join(sys.argv[1], "mesh_examples")  
+	random_dir = os.path.join(sys.argv[1], "random_examples")
 
 	sys.setrecursionlimit(10000)
 	
@@ -122,16 +122,17 @@ if __name__ == "__main__":
 		csv_writer = csv.writer(csvfile)
 		# Each filename has form "output_random_${nodes_source}_${dense}_${minCapacity}_${maxCapacity}.txt"
 		for f_name in os.listdir(random_dir):
-			full_name = os.path.join(mesh_dir, f_name)
+			full_name = os.path.join(random_dir, f_name)
 			if os.path.isfile(full_name):
 				stem = os.path.splitext(f_name)[0]
 				params = stem.split("_")[2:]
 				nodes_source = int(params[0])
 				dense = int(params[1])
 				min_cap = int(params[2])
+				max_cap = int(params[2])
 	
 				(ff_res, sff_res, pfp_res) = test_all_algos(full_name)
-				csv_writer.writerow([nodes_source, dense, min_cap,
+				csv_writer.writerow([nodes_source, dense, min_cap, max_cap,
 									ff_res[0], ff_res[1], 
 									sff_res[0], sff_res[1],
 									pfp_res[0], pfp_res[1]])
